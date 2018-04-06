@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Previsão do Tempo Fatec Ipi Tarde</string>
+    <string name="action_settings">Settings</string>
+    <string name="dica_cidade">Digite a cidade</string>
+    <string name="url">http://api.openweathermap.org/data/2.5/forecast/daily?q=</string>
+    <string name="chave">ef0b0973b783e0614ac87612ec04344b</string>
+</resources>
