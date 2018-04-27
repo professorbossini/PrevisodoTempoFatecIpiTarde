@@ -21,8 +21,13 @@
             android:layout_height="wrap_content" />
 
     </android.support.design.widget.TextInputLayout>
+
+    <ListView
+        android:id="@+id/previsoesListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
     
-    <LinearLayout
+    <!--<LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -31,7 +36,7 @@
             android:src="@mipmap/ic_launcher"
             android:id="@+id/iconeImageView"
             android:layout_width="50dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="50dp" />
 
         <GridLayout
             android:columnCount="3"
@@ -43,12 +48,14 @@
             <TextView
                 android:id="@+id/descricaoTextView"
                 android:layout_gravity="fill_horizontal"
+                android:gravity="center"
                 android:layout_columnSpan="3"
                 android:layout_column="0"
                 android:layout_row="0"
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:gravity="center"
                 android:layout_row="1"
                 android:layout_column="0"
                 android:layout_height="wrap_content"
@@ -56,6 +63,7 @@
                 android:id="@+id/minTextView"/>
 
             <TextView
+                android:gravity="center"
                 android:layout_row="1"
                 android:layout_column="1"
                 android:layout_height="wrap_content"
@@ -63,6 +71,7 @@
                 android:id="@+id/maxTextView"/>
 
             <TextView
+                android:gravity="center"
                 android:layout_row="1"
                 android:layout_column="2"
                 android:layout_height="wrap_content"
@@ -71,6 +80,6 @@
 
 
         </GridLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 
 </LinearLayout>

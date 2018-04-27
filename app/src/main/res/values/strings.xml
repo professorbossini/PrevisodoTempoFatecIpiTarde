@@ -4,4 +4,8 @@
     <string name="dica_cidade">Digite a cidade</string>
     <string name="url">http://api.openweathermap.org/data/2.5/forecast/daily?q=</string>
     <string name="chave">ef0b0973b783e0614ac87612ec04344b</string>
+    <string name="min">Min: %.2f%s</string>
+    <string name="max">Max: %.2f%s</string>
+    <string name="humidity">Hum: %s</string>
+    <string name="unidade_temperatura">imperial</string>
 </resources>

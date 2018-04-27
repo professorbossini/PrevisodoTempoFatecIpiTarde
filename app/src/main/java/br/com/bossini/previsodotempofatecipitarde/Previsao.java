@@ -7,13 +7,14 @@ package br.com.bossini.previsodotempofatecipitarde;
 public class Previsao {
 
     private long dt;
-    private double min, max, humidity;
+    private double min, max;
+    private int humidity;
     private String description;
     private String icone;
 
     public Previsao (){}
 
-    public Previsao(long dt, double min, double max, double humidity, String descricao, String icone) {
+    public Previsao(long dt, double min, double max, int humidity, String descricao, String icone) {
         setDt(dt);
         setMin(min);
         setMax(max);
@@ -46,11 +47,11 @@ public class Previsao {
         this.max = max;
     }
 
-    public double getHumidity() {
+    public int getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(double humidity) {
+    public void setHumidity(int humidity) {
         this.humidity = humidity;
     }
 
