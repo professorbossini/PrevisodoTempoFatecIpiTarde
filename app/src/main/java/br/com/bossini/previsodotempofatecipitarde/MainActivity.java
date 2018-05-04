@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +32,9 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -169,8 +170,10 @@ public class MainActivity extends AppCompatActivity {
     private class BaixaImagem extends AsyncTask <String, Void, Bitmap>{
 
         private ImageView iconeImageView;
-        public BaixaImagem (ImageView iconeImageView){
+        private Map <String, Bitmap> icones;
+        public BaixaImagem (ImageView iconeImageView, Map <String, Bitmap> icones){
             this.iconeImageView = iconeImageView;
+            this.icones = icones;
         }
 
         @Override
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
                 InputStream inputStream =
                         connection.getInputStream();
                 Bitmap resultado = BitmapFactory.decodeStream(inputStream);
+                icones.put(icone[0], resultado);
                 Log.i("meu_app", "baixou...");
                 return resultado;
             }
@@ -197,11 +201,21 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Bitmap bitmap) {
             //iconeImageView.setImageBitmap(bitmap);
             this.iconeImageView.setImageBitmap(bitmap);
-            Toast.makeText(MainActivity.this, "sim, baixou", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "sim, baixou", Toast.LENGTH_SHORT).show();
         }
     }
 
     private class MeuAdapter extends ArrayAdapter <Previsao>{
+
+        class ViewHolder{
+            ImageView iconeImageView;
+            TextView descricaoTextView;
+            TextView minTextView;
+            TextView maxTextView;
+            TextView humidityTextView;
+        }
+
+        Map<String, Bitmap> icones = new HashMap<>();
 
         public MeuAdapter (Context context){
             super (context, -1, previsoes);
@@ -210,15 +224,38 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater inflater =
-                    (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View v = inflater.inflate(R.layout.item_na_lista, parent, false);
+            TextView descricaoTextView;
+            TextView minTextView;
+            TextView maxTextView;
+            TextView humidityTextView;
+            ImageView iconeImageView;
+            ViewHolder viewHolder;
+            if (convertView == null){
+                LayoutInflater inflater =
+                        (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.item_na_lista, parent, false);
+                descricaoTextView = convertView.findViewById(R.id.descricaoTextView);
+                minTextView = convertView.findViewById(R.id.minTextView);
+                maxTextView = convertView.findViewById(R.id.maxTextView);
+                humidityTextView = convertView.findViewById(R.id.humidityTextView);
+                iconeImageView = convertView.findViewById(R.id.iconeImageView);
+                viewHolder = new ViewHolder();
+                viewHolder.iconeImageView = iconeImageView;
+                viewHolder.descricaoTextView = descricaoTextView;
+                viewHolder.minTextView = minTextView;
+                viewHolder.maxTextView = maxTextView;
+                viewHolder.humidityTextView = humidityTextView;
+                convertView.setTag(viewHolder);
+            }else{
+                viewHolder = (ViewHolder) convertView.getTag();
+                descricaoTextView = viewHolder.descricaoTextView;
+                minTextView = viewHolder.minTextView;
+                maxTextView = viewHolder.maxTextView;
+                humidityTextView = viewHolder.humidityTextView;
+                iconeImageView = viewHolder.iconeImageView;
+            }
             Previsao p = previsoes.get(position);
-            TextView descricaoTextView = v.findViewById(R.id.descricaoTextView);
-            TextView minTextView = v.findViewById(R.id.minTextView);
-            TextView maxTextView = v.findViewById(R.id.maxTextView);
-            TextView humidityTextView = v.findViewById(R.id.humidityTextView);
-            ImageView iconeImageView = v.findViewById(R.id.iconeImageView);
+
             SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
             Date date = new Date();
             date.setTime(p.getDt() * 1000);
@@ -239,8 +276,13 @@ public class MainActivity extends AppCompatActivity {
             humidityTextView.setText(
                     getString(
                             R.string.humidity, percentFormat.format(humidity)));
-            new BaixaImagem(iconeImageView).execute(p.getIcone());
-            return v;
+            if (icones.containsKey(p.getIcone())){
+                iconeImageView.setImageBitmap(icones.get(p.getIcone()));
+            }
+            else{
+                new BaixaImagem(iconeImageView, icones).execute(p.getIcone());
+            }
+            return convertView;
         }
 
         @Override
